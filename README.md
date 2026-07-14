@@ -2,6 +2,8 @@
 
 A small, portfolio-ready Python pipeline that extracts structured macro signals from unstructured central bank text using the OpenAI API, then loads the result into a Pandas DataFrame.
 
+> **Current API model:** `gpt-5.6-luna` via the OpenAI Responses API.
+
 The point is not to build a chatbot. The point is to automate the first stage of exploratory data analysis when quantitative workflows need facts buried in speeches, reports, minutes, or policy statements.
 
 ## What It Does
