@@ -25,7 +25,7 @@ def main() -> None:
 
     try:
         response = client.responses.create(
-            model=os.getenv("OPENAI_MODEL", "gpt-5.4-mini"),
+            model=os.getenv("OPENAI_MODEL", "gpt-5.6-luna"),
             input="write a haiku about ai",
             store=True,
         )

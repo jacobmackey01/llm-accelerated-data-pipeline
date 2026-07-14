@@ -28,8 +28,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--temperature",
         type=float,
-        default=0.0,
-        help="Sampling temperature. Keep at 0 for deterministic extraction.",
+        default=None,
+        help=(
+            "Optional sampling temperature. Omit it for models such as "
+            "gpt-5.6-luna that do not support this parameter."
+        ),
     )
     return parser
 

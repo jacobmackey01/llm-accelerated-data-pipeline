@@ -9,12 +9,12 @@ The point is not to build a chatbot. The point is to automate the first stage of
 1. Reads a raw text file, such as a central bank report excerpt.
 2. Sends the text to the OpenAI Responses API with a strict extraction prompt.
 3. Uses Structured Outputs with a Pydantic schema so the response is machine-readable.
-4. Sets `temperature=0` to make the extraction focused and deterministic.
+4. Uses a strict extraction prompt and evidence quotes to keep results focused and auditable.
 5. Converts the parsed result into a Pandas DataFrame and writes it to CSV.
 
 ## Cobblestone Soundbite
 
-> I noticed quantitative models frequently need data from unstructured text, like central bank reports. So, I built a Python pipeline using the OpenAI API. Instead of a chat interface, I pass the raw text to the API with a strict system prompt and a temperature of zero, forcing the LLM to extract only the entities I need and output them directly into a Pandas DataFrame. It basically automates the first stage of exploratory data analysis.
+> I noticed quantitative models frequently need data from unstructured text, like central bank reports. So, I built a Python pipeline using the OpenAI API. Instead of a chat interface, I pass the raw text to the API with a strict system prompt and Structured Outputs, requiring the LLM to extract only the entities I need and output them directly into a Pandas DataFrame. It basically automates the first stage of exploratory data analysis.
 
 ## Project Structure
 
@@ -63,11 +63,13 @@ Or run it as a module:
 python -m llm_data_pipeline.cli sample_data/boe_monetary_policy_excerpt.txt --output outputs/boe_signals.csv
 ```
 
-The default model is `gpt-5.4-mini`, matching the OpenAI Platform quickstart sample and keeping the demo inexpensive. You can override it:
+The default model is `gpt-5.6-luna`. You can override it:
 
 ```bash
 llm-data-pipeline sample_data/boe_monetary_policy_excerpt.txt --model gpt-5.4 --output outputs/boe_signals.csv
 ```
+
+The pipeline omits `temperature` by default because `gpt-5.6-luna` does not support that parameter. If you override the model with one that supports temperature, you can pass `--temperature` explicitly.
 
 ## Platform Smoke Test
 
@@ -104,7 +106,7 @@ central bank text -> OpenAI structured extraction -> Pydantic object -> Pandas D
 
 ## Notes On Reliability
 
-- `temperature=0` reduces sampling randomness.
+- The default API call omits unsupported sampling parameters for `gpt-5.6-luna`.
 - Structured Outputs forces the model to match the schema.
 - The prompt tells the model not to infer facts absent from the text.
 - Each extracted observation includes an `evidence_quote` for traceability.

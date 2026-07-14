@@ -2,7 +2,7 @@
 
 ## 30-Second Version
 
-I built a Python pipeline that turns unstructured central bank text into structured research data. It uses the OpenAI API directly, not ChatGPT, with a strict extraction schema and `temperature=0`. The output is parsed into a Pydantic object, flattened into a Pandas DataFrame, and exported to CSV for downstream analysis.
+I built a Python pipeline that turns unstructured central bank text into structured research data. It uses the OpenAI API directly, not ChatGPT, with a strict extraction schema and evidence-backed outputs. The output is parsed into a Pydantic object, flattened into a Pandas DataFrame, and exported to CSV for downstream analysis.
 
 ## Why It Fits The Role
 
@@ -13,7 +13,7 @@ Cobblestone cares about AI-accelerated workflows. This project shows that I can 
 - The pipeline calls the OpenAI API from Python scripts.
 - The system prompt constrains the model to extract only facts present in the source text.
 - Structured Outputs force the response into a typed Pydantic schema.
-- `temperature=0` keeps extraction focused and repeatable.
+- The strict schema and evidence quotes keep extraction focused and auditable.
 - Pandas turns the parsed objects into rows for analysis.
 - Evidence quotes are stored beside each observation for auditability.
 

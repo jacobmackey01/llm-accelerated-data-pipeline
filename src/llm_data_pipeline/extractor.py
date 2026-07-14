@@ -19,7 +19,7 @@ from llm_data_pipeline.schemas import ReportExtraction
 
 load_dotenv()
 
-DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
+DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.6-luna")
 
 SYSTEM_PROMPT = """You extract macroeconomic and monetary-policy signals for quantitative research.
 
@@ -86,7 +86,7 @@ def extract_report(
     *,
     source_name: str,
     model: str = DEFAULT_MODEL,
-    temperature: float = 0.0,
+    temperature: float | None = None,
     client: Any | None = None,
 ) -> ReportExtraction:
     """Extract structured policy observations from raw text using the OpenAI API."""
@@ -101,9 +101,9 @@ def extract_report(
         client = OpenAI(api_key=api_key)
 
     try:
-        response = client.responses.parse(
-            model=model,
-            input=[
+        request: dict[str, Any] = {
+            "model": model,
+            "input": [
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {
                     "role": "user",
@@ -114,10 +114,13 @@ def extract_report(
                     ),
                 },
             ],
-            text_format=ReportExtraction,
-            temperature=temperature,
-            store=True,
-        )
+            "text_format": ReportExtraction,
+            "store": True,
+        }
+        if temperature is not None:
+            request["temperature"] = temperature
+
+        response = client.responses.parse(**request)
     except Exception as exc:
         message = str(exc)
         if "insufficient_quota" in message:
@@ -173,7 +176,7 @@ def run_pipeline(
     *,
     output_path: str | Path,
     model: str = DEFAULT_MODEL,
-    temperature: float = 0.0,
+    temperature: float | None = None,
 ) -> pd.DataFrame:
     """Run the full text-to-DataFrame pipeline."""
 
