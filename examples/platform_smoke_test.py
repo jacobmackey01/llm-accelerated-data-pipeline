@@ -27,6 +27,7 @@ def main() -> None:
         response = client.responses.create(
             model=os.getenv("OPENAI_MODEL", "gpt-5.6-luna"),
             input="write a haiku about ai",
+            reasoning={"effort": "low"},
             store=True,
         )
     except Exception as exc:

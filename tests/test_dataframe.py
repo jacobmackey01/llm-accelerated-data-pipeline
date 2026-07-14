@@ -57,7 +57,7 @@ class RecordingResponses:
         return SimpleNamespace(output_parsed=self.output_parsed)
 
 
-def test_extract_report_omits_temperature_by_default():
+def test_extract_report_uses_low_reasoning_and_omits_temperature_by_default():
     extraction = ReportExtraction(
         report_title="",
         central_bank="",
@@ -71,6 +71,7 @@ def test_extract_report_omits_temperature_by_default():
     result = extract_report("Sample text", source_name="sample.txt", client=client)
 
     assert result is extraction
+    assert responses.requests[0]["reasoning"] == {"effort": "low"}
     assert "temperature" not in responses.requests[0]
 
 

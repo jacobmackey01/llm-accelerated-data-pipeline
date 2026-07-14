@@ -115,6 +115,7 @@ def extract_report(
                 },
             ],
             "text_format": ReportExtraction,
+            "reasoning": {"effort": "low"},
             "store": True,
         }
         if temperature is not None:

@@ -12,6 +12,7 @@ Cobblestone cares about AI-accelerated workflows. This project shows that I can 
 
 - The pipeline calls the OpenAI API from Python scripts.
 - The current default API model is `gpt-5.6-luna`.
+- Reasoning effort is explicitly set to `low` because extraction is a bounded schema-mapping task rather than complex multi-step analysis.
 - The system prompt constrains the model to extract only facts present in the source text.
 - Structured Outputs force the response into a typed Pydantic schema.
 - The strict schema and evidence quotes keep extraction focused and auditable.
